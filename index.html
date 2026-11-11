@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Euler en el Espacio</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+    <header class="hero">
+        <nav class="navbar">
+            <div class="logo">🚀 EULER EN EL ESPACIO</div>
+            <span>MÉTODOS NUMÉRICOS</span>
+        </nav>
+
+        <div class="hero-content">
+            <span class="etiqueta">DESAFÍO DE INGENIERÍA ESPACIAL</span>
+            <h1>LA MATEMÁTICA<br>DE UN LANZAMIENTO</h1>
+
+            <p>
+                Simulación numérica del despegue de un cohete experimental
+                mediante ecuaciones diferenciales y métodos numéricos.
+            </p>
+
+            <a href="#simulador" class="btn-principal">
+                INICIAR SIMULACIÓN ↓
+            </a>
+        </div>
+
+        <div class="hero-info">
+            <div>
+                <strong>20 s</strong>
+                <span>Tiempo de misión</span>
+            </div>
+            <div>
+                <strong>1962</strong>
+                <span>Inspiración histórica</span>
+            </div>
+            <div>
+                <strong>4</strong>
+                <span>Métodos de comparación</span>
+            </div>
+        </div>
+    </header>
+
+    <main class="contenedor">
+
+        <!-- CONTEXTO -->
+        <section class="seccion" id="contexto">
+            <div class="titulo-seccion">
+                <span>01 / CONTEXTO</span>
+                <h2>Una misión que depende de los cálculos</h2>
+            </div>
+
+            <div class="contexto-grid">
+                <div class="contexto-texto">
+                    <p>
+                        Inspirado en la película Mentes brillantes,
+                        este desafío nos sitúa en el contexto de la
+                        exploración espacial y la importancia de las
+                        matemáticas para verificar trayectorias y
+                        realizar cálculos confiables.
+                    </p>
+
+                    <p>
+                        Nuestra misión consiste en simular el ascenso
+                        vertical de un cohete experimental durante
+                        sus primeros 20 segundos, calculando su
+                        velocidad y altura.
+                    </p>
+
+                    <p>
+                        Utilizaremos el método de Euler y compararemos
+                        sus resultados con Heun, Runge-Kutta de cuarto
+                        orden y la solución analítica.
+                    </p>
+                </div>
+
+                <div class="mision-card">
+                    <span>OBJETIVO DE LA MISIÓN</span>
+                    <h3>Verificar antes de despegar</h3>
+                    <p>
+                        Analizar la precisión de los cálculos y
+                        comprender cómo el tamaño de paso influye
+                        en los resultados.
+                    </p>
+                    <div class="cohete-icon">🚀</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MODELO MATEMÁTICO -->
+        <section class="seccion">
+            <div class="titulo-seccion">
+                <span>02 / MODELO MATEMÁTICO</span>
+                <h2>Las ecuaciones del movimiento</h2>
+            </div>
+
+            <div class="modelo-card">
+                <p>Segunda ley de Newton:</p>
+                <div class="ecuacion">F = ma</div>
+
+                <p>Modelo diferencial de velocidad:</p>
+                <div class="ecuacion">
+                    dv/dt = T/m - g - (k/m)v
+                </div>
+
+                <p>Sistema de ecuaciones diferenciales:</p>
+
+                <div class="ecuacion">
+                    v' = 5.19 - 0.1v
+                </div>
+
+                <div class="ecuacion">
+                    y' = v
+                </div>
+
+                <p>Solución analítica de velocidad:</p>
+                <div class="ecuacion">
+                    v(t) = 51.9(1 - e^(-0.1t))
+                </div>
+
+                <p>Solución analítica de altura:</p>
+                <div class="ecuacion">
+                    y(t) = 51.9t - 519(1 - e^(-0.1t))
+                </div>
+
+                <p class="nota">
+                    Condiciones iniciales: v(0) = 0 m/s e y(0) = 0 m.
+                </p>
+            </div>
+        </section>
+
+        <!-- PARÁMETROS -->
+        <section class="seccion" id="simulador">
+            <div class="titulo-seccion">
+                <span>03 / CONFIGURACIÓN</span>
+                <h2>Parámetros del cohete</h2>
+                <p>Modifica los valores para configurar tu lanzamiento.</p>
+            </div>
+
+            <div class="parametros-grid">
+
+                <div class="campo">
+                    <label for="masa">Masa del cohete (kg)</label>
+                    <input type="number" id="masa" value="1000" min="1">
+                </div>
+
+                <div class="campo">
+                    <label for="empuje">Empuje del motor (N)</label>
+                    <input type="number" id="empuje" value="15000" min="1">
+                </div>
+
+                <div class="campo">
+                    <label for="gravedad">Gravedad (m/s²)</label>
+                    <input type="number" id="gravedad" value="9.81" step="0.01">
+                </div>
+
+                <div class="campo">
+                    <label for="resistencia">Resistencia (kg/s)</label>
+                    <input type="number" id="resistencia" value="100" min="0">
+                </div>
+
+                <div class="campo">
+                    <label for="velocidadInicial">Velocidad inicial (m/s)</label>
+                    <input type="number" id="velocidadInicial" value="0">
+                </div>
+
+                <div class="campo">
+                    <label for="alturaInicial">Altura inicial (m)</label>
+                    <input type="number" id="alturaInicial" value="0">
+                </div>
+
+                <div class="campo">
+                    <label for="tiempoFinal">Tiempo final (s)</label>
+                    <input type="number" id="tiempoFinal" value="20" min="1">
+                </div>
+
+                <div class="campo">
+                    <label for="paso">Tamaño de paso (s)</label>
+                    <select id="paso">
+                        <option value="2">2 segundos</option>
+                        <option value="1">1 segundo</option>
+                        <option value="0.5">0,5 segundos</option>
+                        <option value="0.25">0,25 segundos</option>
+                    </select>
+                </div>
+
+            </div>
+
+            <div class="botones">
+                <button id="btnSimular" class="btn-principal">
+                    ▶ EJECUTAR SIMULACIÓN
+                </button>
+
+                <button id="btnRestablecer" class="btn-secundario">
+                    RESTABLECER VALORES
+                </button>
+            </div>
+
+            <p id="mensaje" class="mensaje"></p>
+        </section>
+
+        <!-- RESULTADOS PRINCIPALES -->
+        <section class="seccion">
+            <div class="titulo-seccion">
+                <span>04 / RESULTADOS</span>
+                <h2>Estado del cohete</h2>
+            </div>
+
+            <div class="resultados-grid">
+
+                <div class="resultado-card">
+                    <span>VELOCIDAD FINAL</span>
+                    <strong id="velocidadResultado">0.0000</strong>
+                    <small>m/s</small>
+                </div>
+
+                <div class="resultado-card">
+                    <span>ALTURA FINAL</span>
+                    <strong id="alturaResultado">0.0000</strong>
+                    <small>metros</small>
+                </div>
+
+                <div class="resultado-card">
+                    <span>VELOCIDAD EXACTA</span>
+                    <strong id="velocidadExacta">0.0000</strong>
+                    <small>m/s</small>
+                </div>
+
+                <div class="resultado-card">
+                    <span>ALTURA EXACTA</span>
+                    <strong id="alturaExacta">0.0000</strong>
+                    <small>metros</small>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- TABLA DE ITERACIONES -->
+        <section class="seccion">
+            <div class="titulo-seccion">
+                <span>05 / ITERACIONES</span>
+                <h2>Tabla de resultados numéricos</h2>
+                <p>Comparación de los métodos en cada instante.</p>
+            </div>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tiempo</th>
+                            <th>Euler V</th>
+                            <th>Euler Y</th>
+                            <th>Heun V</th>
+                            <th>Heun Y</th>
+                            <th>RK4 V</th>
+                            <th>RK4 Y</th>
+                            <th>Exacta V</th>
+                            <th>Exacta Y</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaResultados">
+                        <tr>
+                            <td colspan="9">
+                                Ejecuta la simulación para ver los resultados.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- GRÁFICAS -->
+        <section class="seccion">
+            <div class="titulo-seccion">
+                <span>06 / VISUALIZACIÓN</span>
+                <h2>Comportamiento del lanzamiento</h2>
+            </div>
+
+            <div class="graficas-grid">
+                <div class="grafica-card">
+                    <h3>Velocidad del cohete</h3>
+                    <canvas id="graficaVelocidad"></canvas>
+                </div>
+
+                <div class="grafica-card">
+                    <h3>Altura del cohete</h3>
+                    <canvas id="graficaAltura"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- ERRORES -->
+        <section class="seccion">
+            <div class="titulo-seccion">
+                <span>07 / PRECISIÓN</span>
+                <h2>Análisis de errores</h2>
+            </div>
+
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Método</th>
+                            <th>Error de velocidad</th>
+                            <th>Error de altura</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tablaErrores">
+                        <tr>
+                            <td colspan="3">Esperando simulación...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div id="precisionMensaje" class="precision-mensaje">
+                Ejecuta la simulación para evaluar la precisión.
+            </div>
+        </section>
+
+        <!-- REFLEXIÓN -->
+        <section class="seccion">
+            <div class="titulo-seccion">
+                <span>08 / REFLEXIÓN</span>
+                <h2>Preguntas del desafío</h2>
+            </div>
+
+            <div class="preguntas">
+
+                <details>
+                    <summary>1. ¿Por qué era importante verificar los cálculos antes de enviar astronautas al espacio?</summary>
+                    <p>Porque un error en los cálculos de velocidad, posición o trayectoria podría provocar que una nave no alcanzara su destino o que el regreso fuera peligroso. La verificación permite reducir riesgos y tomar decisiones confiables.</p>
+                </details>
+
+                <details>
+                    <summary>2. ¿Qué riesgos existirían al utilizar un tamaño de paso demasiado grande?</summary>
+                    <p>Se obtendrían aproximaciones menos precisas, ya que el método podría no representar adecuadamente los cambios que ocurren entre dos instantes. Esto puede generar errores importantes en la velocidad y la altura calculadas.</p>
+                </details>
+
+                <details>
+                    <summary>3. ¿Por qué una aproximación puede parecer razonable y aun así acumular errores importantes?</summary>
+                    <p>Porque cada cálculo utiliza el resultado aproximado del paso anterior. Aunque el error individual parezca pequeño, puede acumularse durante las iteraciones y producir diferencias significativas respecto a la solución exacta.</p>
+                </details>
+
+                <details>
+                    <summary>4. ¿Qué variables reales del lanzamiento no fueron consideradas en nuestro modelo?</summary>
+                    <p>No se consideraron la variación de la masa por consumo de combustible, los cambios del empuje, la variación de la gravedad, la presión atmosférica, el viento ni la resistencia aerodinámica variable.</p>
+                </details>
+
+                <details>
+                    <summary>5. ¿Por qué el cálculo de una trayectoria lunar requiere un modelo mucho más complejo que el ascenso vertical de este ejercicio?</summary>
+                    <p>Porque una trayectoria lunar requiere considerar el movimiento en dos o tres dimensiones, la gravedad de varios cuerpos celestes, la velocidad orbital, la distancia, la orientación de la nave y las maniobras de navegación espacial.</p>
+                </details>
+
+            </div>
+        </section>
+
+        <!-- CONCLUSIONES -->
+        <section class="seccion conclusion">
+            <div class="titulo-seccion">
+                <span>09 / CONCLUSIONES</span>
+                <h2>La importancia de calcular correctamente</h2>
+            </div>
+
+            <p>
+                El método de Euler permite aproximar la solución de
+                ecuaciones diferenciales mediante cálculos sucesivos.
+                Sin embargo, su precisión depende del tamaño de paso
+                seleccionado.
+            </p>
+
+            <p>
+                La comparación con Heun, Runge-Kutta de cuarto orden
+                y la solución analítica permite identificar las
+                diferencias entre los métodos y evaluar su precisión.
+            </p>
+
+            <p>
+                Este desafío demuestra que las matemáticas son
+                fundamentales para analizar fenómenos físicos y
+                respaldar decisiones importantes, especialmente
+                en el ámbito de la exploración espacial.
+            </p>
+        </section>
+
+    </main>
+
+    <footer>
+        <h3>🚀 EULER EN EL ESPACIO</h3>
+        <p>Simulación del despegue de un cohete experimental</p>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
